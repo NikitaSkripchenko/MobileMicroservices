@@ -12,7 +12,9 @@ public class UIServiceImpl: UIService {
         return AnyView(
             Button(action: action) {
                 Text(title)
+                    .background(Color.red)
             }
+                
         )
     }
 }

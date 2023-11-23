@@ -67,4 +67,16 @@ graph.dot
 Derived/
 
 ### Tuist managed dependencies ###
-Tuist/Dependencies
+Tuist/Dependencies/graph.json
+Tuist/Dependencies/SwiftPackageManager
+
+# SPM
+/.build
+/Packages
+/*.xcodeproj
+
+**/Derived/
+Tuist.xcworkspace
+node_modules
+Fixture
+

@@ -7,18 +7,17 @@
 //
 
 import Foundation
+import Swinject
 
-class DIContainer {
-    static let shared = DIContainer()
+public class DIContainer {
+    public static let container: Container = {
+        let container = Container()
+        
+        
+        container.register(UIService.self) { _ in
+            UIServiceImpl()
+        }
 
-    private init() {}
-
-    private let uiService: UIService = UIServiceImpl()
-//    private let userService: UserService = UserServiceImpl()
-//    private let itemService: ItemService = ItemServiceImpl()
-
-
-    func resolveUIService() -> UIService {
-        return uiService
-    }
+        return container
+    }()
 }

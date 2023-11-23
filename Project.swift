@@ -51,7 +51,8 @@ let project = Project(
             infoPlist: .default,
             sources: ["Sources/TCAApp/**"],
             dependencies: [
-                .target(name: "SharedServices")
+                .target(name: "SharedServices"),
+                .external(name: "ComposableArchitecture")
             ]
         ),
         Target(
@@ -82,7 +83,10 @@ let project = Project(
             product: .framework,  // Specify static library product type
             bundleId: "com.yourcompany.SharedServices",
             infoPlist: .default,
-            sources: ["Sources/SharedServices/**"]
+            sources: ["Sources/SharedServices/**"],
+            dependencies: [
+                .external(name: "Swinject")
+            ]
         )
     ]
 )

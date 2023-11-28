@@ -7,7 +7,12 @@
 //
 
 import Foundation
+import SharedServices
 
 struct MainViewModel {
+    let list: Initiatives
     
+    init(list: Initiatives) {
+        self.list = list
+    }
 }

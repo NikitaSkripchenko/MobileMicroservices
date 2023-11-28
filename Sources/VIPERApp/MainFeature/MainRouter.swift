@@ -14,7 +14,7 @@ class MainRouter {
 }
 
 extension MainRouter: MainWireframe {
-    func openItem(id: Int) {
+    func openItem(id: String) {
         let detailScreen = DetailScreen().build()
         mainViewController.navigationController?.pushViewController(detailScreen, animated: true)
     }

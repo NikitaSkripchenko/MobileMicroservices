@@ -14,16 +14,20 @@ import Swinject
 class MainScreen {
     
     let uiService: UIService
+    let networkService: NetworkService
     
     init(resolver: Resolver = DIContainer.container,
-         uiService: UIService = UIServiceImpl()) {
+         uiService: UIService = UIServiceImpl(),
+         networkService: NetworkService = DefaultNetworkService()
+        ) {
         self.uiService = uiService
+        self.networkService = networkService
     }
     
     func build() -> UIViewController {
         let router = MainRouter()
         let presenter = MainPresenter()
-        let interactor = MainInteractor()
+        let interactor = MainInteractor(networkService: networkService)
         let view = MainViewController()
         
         view.eventHandler = presenter

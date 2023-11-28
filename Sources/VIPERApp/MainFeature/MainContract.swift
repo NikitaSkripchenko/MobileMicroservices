@@ -7,29 +7,29 @@
 //
 
 import Foundation
+import SharedServices
 
-class SomeDataMock {
-    
-}
-
-protocol MainView: AnyObject {
+protocol MainView: ErrorViewPresentable {
     func setViewModel(_ viewModel: MainViewModel)
+    func setErrorView(_ viewModel: ErrorViewModel, visible: Bool)
 }
 
 protocol MainEventHandler: AnyObject {
     func didLoadView()
-    func didTapOnItem(with id: Int)
+    func didTapOnItem(with id: String)
     func retrieveData()
 }
 
 protocol MainInteractorInput: AnyObject {
-    func retrieveList() -> Result<SomeDataMock, Error>
+    func retrieveList()
 }
 
 protocol MainInteractorOutput: AnyObject {
     /* noop */
+    func didReceiveList(with initiatives: Initiatives)
+    func didReceivedError()
 }
 
 protocol MainWireframe: AnyObject {
-    func openItem(id: Int)
+    func openItem(id: String)
 }

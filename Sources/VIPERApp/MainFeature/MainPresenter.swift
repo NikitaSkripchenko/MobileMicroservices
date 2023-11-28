@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SharedServices
 
 class MainPresenter {
     weak var view: MainView?
@@ -16,30 +17,30 @@ class MainPresenter {
 
 extension MainPresenter: MainEventHandler {
     func didLoadView() {
-        //add loading view
+        retrieveData()
     }
     
-    func didTapOnItem(with id: Int) {
+    func didTapOnItem(with id: String) {
         router.openItem(id: id)
     }
     
     func retrieveData() {
-        switch interactor.retrieveList() {
-        case let .success(data):
-            DispatchQueue.main.async { [weak self] in
-                // remove loading view
-                self?.view?.setViewModel(MainViewModel())
-            }
-        case let .failure(error):
-            DispatchQueue.main.async { [weak self] in
-                // remove loading view
-                self?.view?.setViewModel(MainViewModel())//but error
-            }
-        }
-       
+        interactor.retrieveList()
     }
 }
 
 extension MainPresenter: MainInteractorOutput {
+    func didReceiveList(with initiatives: Initiatives) {
+        DispatchQueue.main.async { [weak self] in
+            self?.view?.setErrorViewStatus(.hidden)
+            self?.view?.setViewModel(MainViewModel(list: initiatives))
+        }
+    }
     
+    func didReceivedError() {
+        DispatchQueue.main.async { [weak self] in
+            // remove loading view
+            self?.view?.setErrorView(ErrorViewModel.initiativesError(""), visible: true)
+        }
+    }
 }

@@ -19,6 +19,8 @@ class FakeEntity {
 class MainViewController: UIViewController {
     var eventHandler: MainEventHandler!
     var tableView: UITableView = UITableView()
+    var emptyStateController: EmptyStateController!
+    var viewModel: MainViewModel?
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -29,68 +31,76 @@ class MainViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
-    private let data = [FakeEntity(id: 1), FakeEntity(id: 2), FakeEntity(id: 12), FakeEntity(id: 14)]
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        eventHandler.didLoadView()
     }
     
     private func setupUI() {
-        // Configure table view
-        
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.dataSource = self
         tableView.delegate = self
-        
-        // Create and configure a navigation bar
-//        let navBar = UINavigationBar()
-//        let navItem = UINavigationItem(title: "Table View")
-//        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(doneButtonTapped))
-//        navItem.rightBarButtonItem = doneButton
-//        navBar.setItems([navItem], animated: false)
-        
-        // Add the navigation bar and table view to the view controller's view
-//        view.addSubview(navBar)
         view.addSubview(tableView)
-        
-        // Set layout constraints
-//        navBar.translatesAutoresizingMaskIntoConstraints = false
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-//            navBar.topAnchor.constraint(equalTo: view.topAnchor),
-//            navBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-//            navBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
+    
+    private func setEmptyStateDataModel(with model: ErrorViewModel) {
+        emptyStateController = EmptyStateController(data: model)
+        emptyStateController.customInset = UIEdgeInsets(top: 16, left: 0, bottom: 16, right: 0)
+        if emptyStateController.parentView == nil {
+            emptyStateController.parentView = self.view
+        }
+    }
 }
 
 extension MainViewController: MainView {
+    func setErrorView(_ viewModel: ErrorViewModel, visible: Bool) {
+        if visible {
+            setEmptyStateDataModel(with: viewModel)
+            emptyStateController.showOverlay()
+        } else {
+            emptyStateController.hideOverlay()
+        }
+    }
+    
     func setViewModel(_ viewModel: MainViewModel) {
-        //
+        self.viewModel = viewModel
+        tableView.reloadData()
     }
 }
 
 extension MainViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard let data = viewModel?.list else { return 0 }
         return data.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let data = viewModel?.list else { return UITableViewCell() }
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        cell.textLabel?.text = "\(data[indexPath.row].id)"
+        var content = cell.defaultContentConfiguration()
+        content.text = "\(data[indexPath.row].title)"
+        content.secondaryText = "\(data[indexPath.row].sponsor.name)"
+        content.textProperties.color = .systemGreen
+
+        cell.contentConfiguration = content
+        
         return cell
     }
 }
 
 extension MainViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let data = viewModel?.list else { return }
         eventHandler.didTapOnItem(with: data[indexPath.row].id)
     }
 }

@@ -6,7 +6,7 @@ import ComposableArchitecture
 struct testApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView(store: Store(initialState: MainFeature.State(), reducer: {
+            MainView(store: Store(initialState: MainFeature.State(), reducer: {
                 MainFeature()
             }))
         }

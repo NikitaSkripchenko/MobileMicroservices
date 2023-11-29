@@ -9,55 +9,77 @@
 import Foundation
 
 // MARK: - Initiative
-struct Initiative: Codable {
-    let id, title, description, media: String
-    let status: String
-    let isUrgent: Bool
-    let progress: Int
-    let sponsor: Sponsor
-    let contacts: [Contact]
-    let directions: [Direction]
-    let items: [Item]
+public struct Initiative: Codable {
+    public let id, title, description, media: String
+    public let status: String
+    public let isUrgent: Bool
+    public let progress: Int
+    public let sponsor: Sponsor
+    public let contacts: [Contact]
+    public let directions: [Direction]
+    public let items: [Item]
 }
 
 // MARK: - Contact
-struct Contact: Codable {
-    let firstName, lastName: String
-    let phones: [Phone]
-    let email: String
-    let links: [Link]
+public struct Contact: Codable, Hashable {
+    public static func == (lhs: Contact, rhs: Contact) -> Bool {
+        return lhs.email == rhs.email &&
+        lhs.firstName == rhs.firstName &&
+        lhs.lastName == rhs.lastName
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(firstName)
+        hasher.combine(lastName)
+        hasher.combine(email)
+    }
+    
+    public let firstName, lastName: String
+    public let phones: [Phone]
+    public let email: String
+    public let links: [Link]
 }
 
 // MARK: - Link
-struct Link: Codable {
-    let url: String
-    let platform: String
+public struct Link: Codable {
+    public let url: String
+    public let platform: String
 }
 
 // MARK: - Phone
-struct Phone: Codable {
-    let number: String
-    let types: [String]
+public struct Phone: Codable {
+    public let number: String
+    public let types: [String]
 }
 
 // MARK: - Direction
-struct Direction: Codable {
-    let directionsType: String
-    let street: String?
-    let town, directions: String
-    let office: Int?
-    let recipient: Contact?
+public struct Direction: Codable, Hashable {
+    public let directionsType: String
+    public let street: String?
+    public let town, directions: String
+    public let office: Int?
+    public let recipient: Contact?
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(street)
+        hasher.combine(office)
+    }
 }
 
 // MARK: - Item
-struct Item: Codable {
-    let title, description, media, unit: String
-    let target, current: Int
+public struct Item: Codable, Hashable {
+    public let title, description, media, unit: String
+    public let target, current: Int
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(title)
+        hasher.combine(description)
+    }
 }
 
 // MARK: - Sponsor
-struct Sponsor: Codable {
-    let id, userName, name: String
+public struct Sponsor: Codable {
+    public let id, userName, name: String
 }
 
-typealias Initiatives = [Initiative]
+public typealias Initiatives = [Initiative]

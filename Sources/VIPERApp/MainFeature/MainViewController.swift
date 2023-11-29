@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import SharedServices
 
 class FakeEntity {
     let id: Int

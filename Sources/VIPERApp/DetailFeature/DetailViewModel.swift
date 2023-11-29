@@ -7,7 +7,8 @@
 //
 
 import Foundation
+import SharedServices
 
 struct DetailViewModel {
-    
+    let initiative: Initiative
 }

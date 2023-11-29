@@ -21,7 +21,7 @@ public struct ErrorViewModel {
 }
 
 extension ErrorViewModel {
-    static func initiativesError(_ code: String) -> ErrorViewModel {
+    public static func initiativesError(_ code: String) -> ErrorViewModel {
         ErrorViewModel(title: "Error", description: "Loading of the list returned an error: \(code)", icon: nil)
     }
 }

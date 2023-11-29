@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SharedServices
 
 class DetailPresenter {
     weak var view: DetailView?
@@ -23,23 +24,24 @@ extension DetailPresenter: DetailEventHandler {
         router.goBack()
     }
     
-    func retrieveData(for id: Int) {
-        switch interactor.retrieveItem(for: id) {
-        case let .success(data):
-            DispatchQueue.main.async { [weak self] in
-                // remove loading view
-                self?.view?.setViewModel(DetailViewModel())
-            }
-        case let .failure(error):
-            DispatchQueue.main.async { [weak self] in
-                // remove loading view
-                self?.view?.setViewModel(DetailViewModel())//but error
-            }
-        }
-       
+    func retrieveData(for id: String) {
+        interactor.retrieveItem(for: id)
     }
 }
 
 extension DetailPresenter: DetailInteractorOutput {
+    func didReceive(_ item: Initiative) {
+        DispatchQueue.main.async { [weak self] in
+            self?.view?.setErrorViewStatus(.hidden)
+            self?.view?.setViewModel(DetailViewModel(initiative: item))
+        }
+    }
+    
+    func didReceivedError() {
+        DispatchQueue.main.async { [weak self] in
+            // remove loading view
+            self?.view?.setErrorViewStatus(.visible(text: ""))
+        }
+    }
     
 }

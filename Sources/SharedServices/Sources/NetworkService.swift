@@ -8,12 +8,13 @@
 
 import Foundation
 
-protocol NetworkService {
+public protocol NetworkService {
     func fetchData(for requestType: Requestable, completion: @escaping (Result<Data, Error>) -> Void)
 }
 
-class DefaultNetworkService: NetworkService {
-    func fetchData(for requestType: Requestable, completion: @escaping (Result<Data, Error>) -> Void) {
+public class DefaultNetworkService: NetworkService {
+    public init() { }
+    public func fetchData(for requestType: Requestable, completion: @escaping (Result<Data, Error>) -> Void) {
         let request = RequestBuilder.buildRequest(for: requestType, baseURL: Constants.baseURL)
 
         URLSession.shared.dataTask(with: request) { (data, response, error) in

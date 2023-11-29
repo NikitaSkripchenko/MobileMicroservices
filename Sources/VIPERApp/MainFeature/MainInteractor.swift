@@ -13,7 +13,6 @@ class MainInteractor {
     weak var delegate: MainInteractorOutput!
     var networkService: NetworkService
     
-    //networking service
     init(networkService: NetworkService) {
         self.networkService = networkService
     }
@@ -30,7 +29,6 @@ extension MainInteractor: MainInteractorInput {
                 let responseData = String(data: data, encoding: .utf8)
                 print("Data received: \(responseData ?? "")")
                 
-                // Update data property
                 do {
                     let initiatives = try JSONDecoder().decode(Initiatives.self, from: data)
                     self.delegate.didReceiveList(with: initiatives)
@@ -40,8 +38,8 @@ extension MainInteractor: MainInteractorInput {
                 
             case .failure(let error):
                 print("Error: \(error)")
+                self.delegate.didReceivedError()
             }
         }
-//        return .success(.init())
     }
 }

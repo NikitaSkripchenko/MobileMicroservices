@@ -8,24 +8,21 @@
 
 import Foundation
 
-enum RequestType: String {
+public enum RequestType: String {
     case get
     case post
-    // Add more request types as needed
 }
 
-protocol Requestable {
+public protocol Requestable {
     var path: String { get }
     var method: RequestType { get }
-    // Add more properties as needed
 }
 
-enum APIRequest: Requestable {
+public enum APIRequest: Requestable {
     case getInitiatives
     case getInitiative(id: String)
-    // Add more cases as needed
 
-    var path: String {
+    public var path: String {
         switch self {
         case .getInitiatives:
             return "/v1/initiatives"
@@ -34,7 +31,7 @@ enum APIRequest: Requestable {
         }
     }
 
-    var method: RequestType {
+    public var method: RequestType {
         switch self {
         case .getInitiatives, .getInitiative:
             return .get

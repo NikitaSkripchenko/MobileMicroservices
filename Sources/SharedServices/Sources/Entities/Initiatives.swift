@@ -9,7 +9,11 @@
 import Foundation
 
 // MARK: - Initiative
-public struct Initiative: Codable {
+public struct Initiative: Codable, Equatable {
+    public static func == (lhs: Initiative, rhs: Initiative) -> Bool {
+        lhs.id == rhs.id
+    }
+    
     public let id, title, description, media: String
     public let status: String
     public let isUrgent: Bool
@@ -77,9 +81,21 @@ public struct Item: Codable, Hashable {
     }
 }
 
+extension Item: Identifiable {
+    public var id: UUID {
+        UUID()
+    }
+    
+    
+}
+
 // MARK: - Sponsor
 public struct Sponsor: Codable {
     public let id, userName, name: String
+}
+
+extension Sponsor: Equatable {
+    
 }
 
 public typealias Initiatives = [Initiative]

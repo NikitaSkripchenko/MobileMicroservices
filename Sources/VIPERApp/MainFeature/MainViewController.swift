@@ -10,13 +10,6 @@ import Foundation
 import UIKit
 import SharedServices
 
-class FakeEntity {
-    let id: Int
-    init(id: Int) {
-        self.id = id
-    }
-}
-
 class MainViewController: UIViewController {
     var eventHandler: MainEventHandler!
     var tableView: UITableView = UITableView()

@@ -17,7 +17,6 @@ protocol MainView: ErrorViewPresentable {
 protocol MainEventHandler: AnyObject {
     func didLoadView()
     func didTapOnItem(with id: String)
-    func retrieveData()
 }
 
 protocol MainInteractorInput: AnyObject {

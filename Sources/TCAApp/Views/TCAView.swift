@@ -14,27 +14,62 @@ import SharedServices
 
 struct MainFeature: Reducer {
     @Dependency(\.uiService) var uiService
+    @Dependency(\.networkService) var networkService
     struct State: Equatable {
-        var count = 0
+        static func == (lhs: MainFeature.State, rhs: MainFeature.State) -> Bool {
+            lhs.data == rhs.data
+        }
+        
+        var isLoading: Bool = false
+        var data: Initiatives?
+        var error: Error?
     }
     
     enum Action {
-        case buttonTapped
+        case loadData
+        case dataLoaded(Initiatives)
+        case dataLoadingFailed
+        case pickItem(index: Int)
     }
     
     func reduce(into state: inout State, action: Action) -> Effect<Action> {
         switch action {
-        case .buttonTapped:
-            state.count += 1
-            print("logged")
+        case .loadData:
+            let request = APIRequest.getInitiatives
+            state.isLoading = true
+            return .run { send in
+                let data = try await networkService.fetchData(for: request)
+                do {
+                    let initiatives = try JSONDecoder().decode(Initiatives.self, from: data)
+                    await send(.dataLoaded(initiatives))
+                }
+                catch {
+                    await send(.dataLoadingFailed)
+                }
+            }
+        case .pickItem(let index):
+            print(index)
+            return .none
+        case let .dataLoaded(data):
+            state.isLoading = false
+            state.data = data
+            return .none
+        case .dataLoadingFailed:
+            state.isLoading = false
             return .none
         }
     }
 }
 
 extension UIServiceImpl: DependencyKey {
-    public static var liveValue: SharedServices.UIServiceImpl {
+    public static var liveValue: UIServiceImpl {
         UIServiceImpl()
+    }
+}
+
+extension DefaultNetworkService: DependencyKey {
+    public static var liveValue: DefaultNetworkService {
+        DefaultNetworkService()
     }
 }
 
@@ -42,5 +77,10 @@ extension DependencyValues {
     var uiService: UIServiceImpl {
         get { self[UIServiceImpl.self] }
         set { self[UIServiceImpl.self] = newValue }
+    }
+    
+    var networkService: DefaultNetworkService {
+        get { self[DefaultNetworkService.self] }
+        set { self[DefaultNetworkService.self] = newValue }
     }
 }

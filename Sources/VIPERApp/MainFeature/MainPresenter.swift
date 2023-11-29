@@ -17,15 +17,11 @@ class MainPresenter {
 
 extension MainPresenter: MainEventHandler {
     func didLoadView() {
-        retrieveData()
+        interactor.retrieveList()
     }
     
     func didTapOnItem(with id: String) {
         router.openItem(id: id)
-    }
-    
-    func retrieveData() {
-        interactor.retrieveList()
     }
 }
 
@@ -39,7 +35,6 @@ extension MainPresenter: MainInteractorOutput {
     
     func didReceivedError() {
         DispatchQueue.main.async { [weak self] in
-            // remove loading view
             self?.view?.setErrorView(ErrorViewModel.initiativesError(""), visible: true)
         }
     }

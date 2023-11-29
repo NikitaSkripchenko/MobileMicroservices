@@ -9,9 +9,24 @@ struct ContentView: View {
     var body: some View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
             VStack {
-                uiService.createButton(title: "Tap me") {
-                    viewStore.send(.buttonTapped)
+                if viewStore.isLoading {
+                    ProgressView("Loading...")
+                } else if let data = viewStore.data {
+                    List {
+                        ForEach(data, id: \.id) { element in
+                            VStack(alignment: .leading) {
+                                Text(element.title)
+                                    .foregroundStyle(.green)
+                                Text(element.sponsor.name)
+                            }
+                        }
+                    }
+                } else if let error = viewStore.error {
+                    Text("Error: \(error.localizedDescription)")
                 }
+            }
+            .onAppear {
+                viewStore.send(.loadData)
             }
         }
     }

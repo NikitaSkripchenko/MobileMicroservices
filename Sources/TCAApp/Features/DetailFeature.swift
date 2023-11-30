@@ -53,6 +53,5 @@ struct DetailFeature: Reducer {
                 return .none
             }
         }
-        
     }
 }

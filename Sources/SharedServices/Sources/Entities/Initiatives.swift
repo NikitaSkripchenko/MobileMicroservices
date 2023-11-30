@@ -24,6 +24,8 @@ public struct Initiative: Codable, Equatable {
     public let items: [Item]
 }
 
+extension Initiative: Identifiable { }
+
 // MARK: - Contact
 public struct Contact: Codable, Hashable {
     public static func == (lhs: Contact, rhs: Contact) -> Bool {

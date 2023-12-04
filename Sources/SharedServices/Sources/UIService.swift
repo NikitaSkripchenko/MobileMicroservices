@@ -3,6 +3,28 @@ import SwiftUI
 public protocol UIService {
     func createButton(title: String, action: @escaping () -> Void) -> AnyView
     func createInitiativeScreen(initiative: Initiative) -> AnyView
+    func createProgressView(status: String, progress: Int) -> AnyView
+}
+
+public struct StatusProgressView: View {
+    let status: String
+    let progress: Int
+
+    public var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Text(status)
+                    .foregroundColor(.green)
+                    .font(.subheadline)
+                
+                Spacer()
+                
+                ProgressView(value: Double(progress), total: 100)
+                    .accentColor(.green)
+                    .frame(width: 100)
+            }
+        }
+    }
 }
 
 public class UIServiceImpl: UIService {
@@ -18,28 +40,13 @@ public class UIServiceImpl: UIService {
         )
     }
     
+    public func createProgressView(status: String, progress: Int) -> AnyView {
+        return AnyView (
+            StatusProgressView(status: status, progress: progress)
+        )
+    }
+    
     public func createInitiativeScreen(initiative: Initiative) -> AnyView {
-        struct StatusProgressView: View {
-            let status: String
-            let progress: Int
-
-            var body: some View {
-                VStack(alignment: .leading, spacing: 8) {
-                    HStack {
-                        Text(status)
-                            .foregroundColor(.green)
-                            .font(.subheadline)
-                        
-                        Spacer()
-                        
-                        ProgressView(value: Double(progress), total: 100)
-                            .accentColor(.green)
-                            .frame(width: 100)
-                    }
-                }
-            }
-        }
-
         struct SponsorView: View {
             let sponsor: Sponsor
 
@@ -189,7 +196,6 @@ public class UIServiceImpl: UIService {
         
         return AnyView(
             ScrollView {
-                //                Media images
                 if let mediaURL = URL(string: "\(Constants.baseURL)/v1/media/\(initiative.media)") {
                     AsyncImage(url: mediaURL)
                         .aspectRatio(contentMode: .fill)

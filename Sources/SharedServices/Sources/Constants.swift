@@ -8,6 +8,6 @@
 
 import Foundation
 
-struct Constants {
-    static let baseURL: URL = URL(string: "http://localhost:8080")!
+public struct Constants {
+    public static let baseURL: URL = URL(string: "http://localhost:8080")!
 }

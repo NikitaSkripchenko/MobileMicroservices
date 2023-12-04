@@ -27,6 +27,6 @@ struct DetailView: View {
         }
         .onAppear {
             viewModel.loadItem()
-            }
+        }
     }
 }

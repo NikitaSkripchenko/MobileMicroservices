@@ -90,6 +90,15 @@ struct DetailInitiativeView: View {
         .navigationBarTitle("", displayMode: .inline)
         .sheet(isPresented: $showSheet) {
             VStack(alignment: .leading) {
+                HStack(alignment: .center) {
+                    Spacer()
+                    Capsule()
+                        .fill(Color.secondary)
+                        .frame(width: 30, height: 3, alignment: .center)
+                        .padding(10)
+                    Spacer()
+                }
+                Spacer()
                 ContactsView(contacts: initiative.contacts)
                     .padding()
                 DirectionsView(directions: initiative.directions)

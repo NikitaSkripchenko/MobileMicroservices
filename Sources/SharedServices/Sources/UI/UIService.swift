@@ -59,7 +59,7 @@ struct DirectionsView: View {
                 Image(systemName: "location")
                     .font(.title)
                 Text("Локація")
-                    .font(.largeTitle)
+                    .font(.title)
             }
             
             ForEach(directions, id: \.self) { direction in

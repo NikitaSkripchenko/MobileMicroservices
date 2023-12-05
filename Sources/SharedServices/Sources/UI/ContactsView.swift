@@ -17,7 +17,7 @@ struct ContactsView: View {
                 Image(systemName: "phone")
                     .font(.title)
                 Text("Контакти")
-                    .font(.largeTitle)
+                    .font(.title)
             }
             ForEach(contacts, id: \.self) { contact in
                 VStack(alignment: .leading, spacing: 4) {

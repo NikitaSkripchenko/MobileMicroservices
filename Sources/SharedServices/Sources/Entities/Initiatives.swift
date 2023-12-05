@@ -22,6 +22,29 @@ public struct Initiative: Codable, Equatable {
     public let contacts: [Contact]
     public let directions: [Direction]
     public let items: [Item]
+    
+    public init(title:String,
+         description: String,
+         media: String,
+         status: String,
+         isUrgent: Bool,
+         progress: Int,
+         sponsor: Sponsor,
+         contacts: [Contact],
+         directions: [Direction],
+         items: [Item]) {
+        self.title = title
+        self.description = description
+        self.media = media
+        self.status = status
+        self.isUrgent = isUrgent
+        self.progress = progress
+        self.sponsor = sponsor
+        self.contacts = contacts
+        self.directions = directions
+        self.items = items
+        self.id = UUID().uuidString
+    }
 }
 
 extension Initiative: Identifiable { }
@@ -94,6 +117,12 @@ extension Item: Identifiable {
 // MARK: - Sponsor
 public struct Sponsor: Codable {
     public let id, userName, name: String
+    
+    public init(id: String, userName: String, name: String) {
+        self.id = id
+        self.userName = userName
+        self.name = name
+    }
 }
 
 extension Sponsor: Equatable {

@@ -1,16 +1,24 @@
-import SwiftUI
-import SharedServices
+//
+//  SponsorsViewModel.swift
+//  MVVMApp
+//
+//  Created by Nikita Skrypchenko on 06.12.2023.
+//  Copyright © 2023 OporaOrg. All rights reserved.
+//
+
+import Foundation
 import Combine
+import SharedServices
 import Swinject
 
-class MainViewModel: ObservableObject {
+class SponsorsViewModel: ObservableObject {
     enum LoadingState {
         case loading
-        case loaded(items: Initiatives)
+        case loaded(items: [Sponsor])
         case error(Error)
     }
     
-    @Published var selectedItem: Item?
+    @Published var selectedSponsor: Int?
     @Published var loadingState: LoadingState = .loading
     private var cancellables: Set<AnyCancellable> = []
     
@@ -24,15 +32,15 @@ class MainViewModel: ObservableObject {
         self.uiService = uiService
         self.networkService = networkService
     }
-
+    
     func loadList() {
-        let requestType = APIRequest.getInitiatives
+        let requestType = APIRequest.getSponsors
         networkService.fetchData(for: requestType) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case let .success(data):
                 do {
-                    let initiatives = try JSONDecoder().decode(Initiatives.self, from: data)
+                    let initiatives = try JSONDecoder().decode([Sponsor].self, from: data)
                     DispatchQueue.main.async {
                         self.loadingState = .loaded(items: initiatives)
                     }
@@ -49,7 +57,7 @@ class MainViewModel: ObservableObject {
         }
     }
     
-    func itemTapped(item: Item) {
-        selectedItem = item
+    func itemTapped(id: Int) {
+        selectedSponsor = id
     }
 }

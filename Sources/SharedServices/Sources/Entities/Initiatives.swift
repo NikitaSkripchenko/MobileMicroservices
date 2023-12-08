@@ -110,23 +110,30 @@ extension Item: Identifiable {
     public var id: UUID {
         UUID()
     }
-    
-    
 }
 
 // MARK: - Sponsor
 public struct Sponsor: Codable {
     public let id, userName, name: String
+    public let media, description: String?
+    public let contacts: [Contact]?
     
-    public init(id: String, userName: String, name: String) {
+    public init(id: String,
+                userName: String,
+                name: String,
+                media: String? = nil,
+                description: String? = nil,
+                contacts: [Contact]? = nil
+    ) {
         self.id = id
         self.userName = userName
         self.name = name
+        self.media = media
+        self.description = description
+        self.contacts = contacts
     }
 }
 
-extension Sponsor: Equatable {
-    
-}
+extension Sponsor: Equatable { }
 
 public typealias Initiatives = [Initiative]

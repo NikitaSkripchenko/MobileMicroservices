@@ -20,7 +20,7 @@ struct DetailInitiativeView: View {
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             if let mediaURL = URL(string: "\(Constants.baseURL)/v1/media/\(initiative.media)") {
-                VStack(alignment: .leading) {
+                VStack {
                     AsyncImage(url: mediaURL) { image in
                         image
                             .resizable()
@@ -71,7 +71,15 @@ struct DetailInitiativeView: View {
                 Divider()
                 ItemsView(items: initiative.items)
             }
+            .padding(.horizontal)
         }
+        .ignoresSafeArea([.all], edges: [.top])
+        .safeAreaInset(edge: .top, content: {
+            Color.clear
+                .frame(height: 0)
+                .background(.bar)
+                .border(Color.black)
+        })
         .safeAreaInset(edge: .bottom, content: {
             Button(action: {
                 showSheet.toggle()
@@ -85,9 +93,10 @@ struct DetailInitiativeView: View {
             }
             .padding()
         })
-        .padding(.horizontal)
         .background(Color.white)
-        .navigationBarTitle("", displayMode: .inline)
+        .navigationBarTitleDisplayMode(.inline)
+//        .navigationBarTitle("", displayMode: .inline)
+        
         .sheet(isPresented: $showSheet) {
             VStack(alignment: .leading) {
                 HStack(alignment: .center) {
@@ -139,7 +148,7 @@ struct DetailInitiativeView_Preview: PreviewProvider {
         DetailInitiativeView(initiative: 
                 .init(title: "title",
                       description: "descriptiondescriptiondescriptiondescriptiondescriptiondescription",
-                      media:  "\(Constants.baseURL)/v1/media/b0a516bc-876a-455e-accf-d24ec5784e3f",
+                      media:  "\(Constants.baseURL)/v1/media/913829c5-6de1-4e44-9ffe-3e7ae84b0d19",
                       status: "1",
                       isUrgent: true,
                       progress: 40,

@@ -7,8 +7,6 @@ public protocol UIService {
     func createInitiativeCard(initiative: Initiative) -> AnyView
 }
 
-
-
 public class UIServiceImpl: UIService {
     public init() { }
     

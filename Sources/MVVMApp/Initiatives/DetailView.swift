@@ -30,3 +30,9 @@ struct DetailView: View {
         }
     }
 }
+
+//struct DetailView_preview: PreviewProvider {
+//    static var previews: some View {
+//        DetailView(viewModel: .init(itemID: "3f8a5eee-ff1e-4af9-bc11-37d5cd4fe9fd"))
+//    }
+//}

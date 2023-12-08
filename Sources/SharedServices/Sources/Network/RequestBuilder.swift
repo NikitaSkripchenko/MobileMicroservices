@@ -22,7 +22,6 @@ struct RequestBuilder {
 
         var request = URLRequest(url: url)
         request.httpMethod = requestType.method.rawValue.uppercased()
-        // Customize request further if needed
 
         return request
     }

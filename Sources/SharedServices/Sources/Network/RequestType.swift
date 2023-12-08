@@ -11,6 +11,7 @@ import Foundation
 public enum RequestType: String {
     case get
     case post
+    case put
 }
 
 public protocol Requestable {
@@ -21,6 +22,7 @@ public protocol Requestable {
 public enum APIRequest: Requestable {
     case getInitiatives
     case getInitiative(id: String)
+    case getSponsors
 
     public var path: String {
         switch self {
@@ -28,12 +30,16 @@ public enum APIRequest: Requestable {
             return "/v1/initiatives"
         case .getInitiative(let id):
             return "/v1/initiatives/\(id)"
+        case .getSponsors:
+            return "/v1/sponsors"
         }
     }
 
     public var method: RequestType {
         switch self {
         case .getInitiatives, .getInitiative:
+            return .get
+        case .getSponsors:
             return .get
         }
     }

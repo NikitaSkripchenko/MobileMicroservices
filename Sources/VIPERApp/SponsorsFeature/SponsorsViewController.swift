@@ -1,24 +1,24 @@
 //
-//  MainViewController.swift
-//  ViperApp
+//  SponsorsViewController.swift
+//  SharedServices
 //
-//  Created by Nikita Skrypchenko on 23.11.2023.
+//  Created by Nikita Skrypchenko on 23.12.2023.
 //  Copyright © 2023 OporaOrg. All rights reserved.
 //
-
 import Foundation
 import UIKit
 import SwiftUI
 import SharedServices
 import Swinject
 
-class InitiativesViewController: UIViewController {
-    var eventHandler: InitiativesEventHandler!
+final class SponsorsViewController: UIViewController {
+    var eventHandler: SponsorsEventHandler!
     var tableView: UITableView = UITableView(frame: .zero, style: .insetGrouped)
     var emptyStateController: EmptyStateController!
-    var viewModel: InitiativesViewModel?
+    var viewModel: SponsorsViewModel?
     private let uiService: UIService
     private let resolver: Resolver
+    private var data: [Sponsor] = []
     
     init(resolver: Resolver = DIContainer.container,
          uiService: UIService = UIServiceImpl()
@@ -26,7 +26,9 @@ class InitiativesViewController: UIViewController {
         self.resolver = resolver
         self.uiService = uiService
         super.init(nibName: nil, bundle: nil)
+        self.title = "Viper List"
     }
+
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -63,7 +65,7 @@ class InitiativesViewController: UIViewController {
     }
 }
 
-extension InitiativesViewController: InitiativesView {
+extension SponsorsViewController: SponsorsView {
     func setErrorView(_ viewModel: ErrorViewModel, visible: Bool) {
         if visible {
             setEmptyStateDataModel(with: viewModel)
@@ -73,32 +75,32 @@ extension InitiativesViewController: InitiativesView {
         }
     }
     
-    func setViewModel(_ viewModel: InitiativesViewModel) {
+    func setViewModel(_ viewModel: SponsorsViewModel) {
         self.viewModel = viewModel
         tableView.reloadData()
     }
 }
 
-extension InitiativesViewController: UITableViewDataSource {
+extension SponsorsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let data = viewModel?.list else { return 0 }
-        return data.count
+        return viewModel?.list.count ?? 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let element = viewModel?.list[indexPath.row] else { return UITableViewCell() }
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         cell.contentConfiguration = UIHostingConfiguration {
-            uiService.createInitiativeCard(initiative: element)
+            uiService.createSponsorCard(sponsor: element)
         }
         cell.selectionStyle = .none
         return cell
     }
 }
 
-extension InitiativesViewController: UITableViewDelegate {
+extension SponsorsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let data = viewModel?.list else { return }
         eventHandler.didTapOnItem(with: data[indexPath.row].id)
     }
 }
+

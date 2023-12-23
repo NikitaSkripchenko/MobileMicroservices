@@ -9,7 +9,7 @@
 import Foundation
 import SharedServices
 
-struct MainViewModel {
+struct InitiativesViewModel {
     let list: Initiatives
     
     init(list: Initiatives) {

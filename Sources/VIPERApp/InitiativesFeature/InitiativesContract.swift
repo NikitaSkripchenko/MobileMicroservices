@@ -9,26 +9,25 @@
 import Foundation
 import SharedServices
 
-protocol MainView: ErrorViewPresentable {
-    func setViewModel(_ viewModel: MainViewModel)
+protocol InitiativesView: ErrorViewPresentable {
+    func setViewModel(_ viewModel: InitiativesViewModel)
     func setErrorView(_ viewModel: ErrorViewModel, visible: Bool)
 }
 
-protocol MainEventHandler: AnyObject {
+protocol InitiativesEventHandler: AnyObject {
     func didLoadView()
     func didTapOnItem(with id: String)
 }
 
-protocol MainInteractorInput: AnyObject {
+protocol InitiativesInteractorInput: AnyObject {
     func retrieveList()
 }
 
-protocol MainInteractorOutput: AnyObject {
-    /* noop */
+protocol InitiativesInteractorOutput: AnyObject {
     func didReceiveList(with initiatives: Initiatives)
     func didReceivedError()
 }
 
-protocol MainWireframe: AnyObject {
+protocol InitiativesWireframe: AnyObject {
     func openItem(id: String)
 }

@@ -1,16 +1,16 @@
 //
-//  MainInteractor.swift
+//  SponsorsInteractor.swift
 //  ViperApp
 //
-//  Created by Nikita Skrypchenko on 23.11.2023.
+//  Created by Nikita Skrypchenko on 23.12.2023.
 //  Copyright © 2023 OporaOrg. All rights reserved.
 //
 
 import Foundation
 import SharedServices
 
-class InitiativesInteractor {
-    weak var delegate: InitiativesInteractorOutput!
+class SponsorsInteractor {
+    weak var delegate: SponsorsInteractorOutput!
     var networkService: NetworkService
     
     init(networkService: NetworkService) {
@@ -18,9 +18,9 @@ class InitiativesInteractor {
     }
 }
 
-extension InitiativesInteractor: InitiativesInteractorInput {
+extension SponsorsInteractor: SponsorsInteractorInput {
     func retrieveList() {
-        let requestType = APIRequest.getInitiatives
+        let requestType = APIRequest.getSponsors
         
         networkService.fetchData(for: requestType) { [weak self] result in
             guard let self = self else { return }
@@ -30,8 +30,8 @@ extension InitiativesInteractor: InitiativesInteractorInput {
                 print("Data received: \(responseData ?? "")")
                 
                 do {
-                    let initiatives = try JSONDecoder().decode(Initiatives.self, from: data)
-                    self.delegate.didReceiveList(with: initiatives)
+                    let sponsors = try JSONDecoder().decode([Sponsor].self, from: data)
+                    self.delegate.didReceiveList(with: sponsors)
                 } catch {
                     self.delegate.didReceivedError()
                 }
@@ -43,3 +43,4 @@ extension InitiativesInteractor: InitiativesInteractorInput {
         }
     }
 }
+

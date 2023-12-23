@@ -9,11 +9,11 @@
 import Foundation
 import UIKit
 
-class MainRouter {
+class InitiativesRouter {
     weak var mainViewController: UIViewController!
 }
 
-extension MainRouter: MainWireframe {
+extension InitiativesRouter: InitiativesWireframe {
     func openItem(id: String) {
         let detailScreen = DetailScreen().build(id: id)
         mainViewController.navigationController?.pushViewController(detailScreen, animated: true)

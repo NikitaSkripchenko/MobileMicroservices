@@ -5,6 +5,7 @@ public protocol UIService {
     func createInitiativeScreen(initiative: Initiative) -> AnyView
     func createProgressView(status: String, progress: Int) -> AnyView
     func createInitiativeCard(initiative: Initiative) -> AnyView
+    func createSponsorCard(sponsor: Sponsor) -> AnyView
 }
 
 public class UIServiceImpl: UIService {
@@ -34,6 +35,12 @@ public class UIServiceImpl: UIService {
     public func createInitiativeScreen(initiative: Initiative) -> AnyView {
         return AnyView(
            DetailInitiativeView(initiative: initiative)
+        )
+    }
+    
+    public func createSponsorCard(sponsor: Sponsor) -> AnyView {
+        return AnyView(
+            SponsorCardView(sponsor: sponsor)
         )
     }
 }

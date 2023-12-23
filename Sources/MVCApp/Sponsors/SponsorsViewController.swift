@@ -1,8 +1,8 @@
 //
-//  MainViewController.swift
+//  SponsorsViewController.swift
 //  MVCApp
 //
-//  Created by Nikita Skrypchenko on 22.11.2023.
+//  Created by Nikita Skrypchenko on 23.12.2023.
 //  Copyright © 2023 OporaOrg. All rights reserved.
 //
 
@@ -12,11 +12,11 @@ import SwiftUI
 import SharedServices
 import Swinject
 
-class InitiativesViewController: UIViewController {
+final class SponsorsViewController: UIViewController {
     private let uiService: UIService
     private let resolver: Resolver
     private var tableView: UITableView = UITableView(frame: .zero, style: .insetGrouped)
-    private var data: Initiatives = []
+    private var data: [Sponsor] = []
     private let networkService: NetworkService
 
     init(resolver: Resolver = DIContainer.container,
@@ -39,7 +39,7 @@ class InitiativesViewController: UIViewController {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.dataSource = self
 
-        tableView.delegate = self
+        
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -54,7 +54,7 @@ class InitiativesViewController: UIViewController {
     }
     
     private func loadList() {
-        let requestType = APIRequest.getInitiatives
+        let requestType = APIRequest.getSponsors
         
         networkService.fetchData(for: requestType) { [weak self] result in
             guard let self = self else { return }
@@ -64,8 +64,8 @@ class InitiativesViewController: UIViewController {
                 print("Data received: \(responseData ?? "")")
                 
                 do {
-                    let initiatives = try JSONDecoder().decode(Initiatives.self, from: data)
-                    self.data = initiatives
+                    let sponsors = try JSONDecoder().decode([Sponsor].self, from: data)
+                    self.data = sponsors
                     DispatchQueue.main.async {
                         self.tableView.reloadData()
                     }
@@ -85,7 +85,7 @@ class InitiativesViewController: UIViewController {
     }
 }
 
-extension InitiativesViewController: UITableViewDataSource {
+extension SponsorsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return data.count
     }
@@ -94,16 +94,9 @@ extension InitiativesViewController: UITableViewDataSource {
         let element = data[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         cell.contentConfiguration = UIHostingConfiguration {
-            uiService.createInitiativeCard(initiative: element)
+            uiService.createSponsorCard(sponsor: element)
         }
         cell.selectionStyle = .none
         return cell
-    }
-}
-
-extension InitiativesViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let detailViewController = DetailViewController(initiativeId: data[indexPath.row].id)
-        self.navigationController?.pushViewController(detailViewController, animated: true)
     }
 }

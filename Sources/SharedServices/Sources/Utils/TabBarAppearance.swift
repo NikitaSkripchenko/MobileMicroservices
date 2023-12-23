@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 extension UITabBarAppearance {
-    static func whiteAppearance() -> UITabBarAppearance {
+    public static func whiteAppearance() -> UITabBarAppearance {
         let appearance = UITabBarAppearance()
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = .white

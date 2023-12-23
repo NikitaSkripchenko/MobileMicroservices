@@ -42,15 +42,12 @@ class DetailViewController: UIViewController {
         view.backgroundColor = .white
         let swiftUIView = uiService.createInitiativeScreen(initiative: initiative)
         
-        // Wrapping SwiftUI view in a UIHostingController
         let hostingController = UIHostingController(rootView: swiftUIView)
         hostingController.view.translatesAutoresizingMaskIntoConstraints = false
         
-        // Adding UIHostingController as a child view controller
         addChild(hostingController)
         view.addSubview(hostingController.view)
         
-        // Setting constraints
         NSLayoutConstraint.activate([
             hostingController.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             hostingController.view.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),

@@ -2,8 +2,8 @@ import SwiftUI
 import SharedServices
 import ComposableArchitecture
 
-struct MainView: View {
-    let store: StoreOf<MainFeature>
+struct InitiativesView: View {
+    let store: StoreOf<InitiativeFeature>
     @Dependency(\.uiService) var uiService
     
     var body: some View {
@@ -15,15 +15,16 @@ struct MainView: View {
                     } else if let data = viewStore.data {
                         List {
                             ForEach(data.indices, id: \.self) { index in
-                                let element = data[index]
-                                NavigationLink(state: DetailFeature.State(id: element.id)) {
-                                    VStack(alignment: .leading) {
-                                        Text(element.title)
-                                            .foregroundStyle(.green)
-                                        Text(element.sponsor.name)
+                                ZStack {
+                                    let element = data[index]
+                                    uiService.createInitiativeCard(initiative: element)
+                                    NavigationLink(state: DetailFeature.State(id: element.id)) {
+                                        EmptyView()
                                     }
+                                    .opacity(0)
+                                    
                                 }
-                                .buttonStyle(.borderless)
+                                .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
                             }
                         }
                         .navigationTitle("TCA List")
@@ -43,10 +44,10 @@ struct MainView: View {
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
+struct InitiativesView_Previews: PreviewProvider {
     static var previews: some View {
-        MainView(store: Store(initialState: MainFeature.State(), reducer: {
-            MainFeature()
+        InitiativesView(store: Store(initialState: InitiativeFeature.State(), reducer: {
+            InitiativeFeature()
         }))
     }
 }
